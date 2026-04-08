@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MAD-SAN | Detalles Técnicos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      /* PALETA DE COLORES SOLICITADA */
+      --blush:   #F4DFE6;
+      --pink:    #E0A3BB;
+      --mist:    #D6E6E7;
+      --lime:    #C5CC82;
+      --olive:   #97A13B;
+      
+      /* Colores neutros estilo Apple */
+      --text-main: #1d1d1f;
+      --text-muted: #515154;
+      --white: #ffffff;
+      
+      /* Glassmorphism minimalista */
+      --glass-bg: rgba(255, 255, 255, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.8);
+      --glass-shadow: rgba(0, 0, 0, 0.03);
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: var(--mist); /* Fondo unificado */
+      color: var(--text-main);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* ── NAVBAR ── */
+    nav { position:fixed; top:22px; left:50%; transform:translateX(-50%); z-index:100; }
+    .nav-island {
+      display:flex; align-items:center; gap:6px; padding:7px 10px; border-radius:999px;
+      background:rgba(255,255,255,0.25); backdrop-filter:blur(24px) saturate(180%);
+      -webkit-backdrop-filter:blur(24px) saturate(180%);
+      border:1px solid rgba(255,255,255,0.5);
+      box-shadow:0 8px 32px rgba(0,0,0,0.05),0 1.5px 0 rgba(255,255,255,0.6) inset;
+      position:relative; overflow:hidden;
+    }
+    .nav-link {
+      position:relative; font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:500;
+      color:rgba(0,0,0,0.6); text-decoration:none; padding:6px 16px; border-radius:999px;
+      letter-spacing:0.02em; transition:all .3s ease; white-space:nowrap; z-index:2;
+    }
+    .nav-link:hover,.nav-link.active { color:var(--text-main); background:rgba(255,255,255,0.7); box-shadow:0 2px 10px rgba(0,0,0,0.03); }
+    .nav-dot { width:4px; height:4px; border-radius:50%; background:rgba(0,0,0,0.15); flex-shrink:0; position:relative; z-index:2; }
+
+    /* ── HERO ── */
+    #hero {
+      position:relative; width:100%; height:100vh;
+      overflow:hidden; display:flex; align-items:flex-end;
+    }
+    #hero video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+    #hero::after {
+      content:''; position:absolute; inset:0; z-index:1;
+      background:linear-gradient(to bottom, transparent 20%, rgba(29, 29, 31, 0.85) 100%);
+      pointer-events:none;
+    }
+    .hero-center {
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      z-index:3; text-align:center; color:#fff;
+      opacity:0; animation:heroTextFade 1.4s ease forwards; animation-delay:1.5s;
+      pointer-events:none;
+    }
+    .hero-center .eyebrow {
+      font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:600;
+      letter-spacing:0.3em; text-transform:uppercase; color:rgba(255,255,255,0.9);
+      margin-bottom:12px; display:block;
+    }
+    .hero-center h1 {
+      font-family:'Montserrat',sans-serif; font-size:clamp(50px,7vw,90px);
+      font-weight:700; letter-spacing:0.02em; line-height:1.1; color:#fff;
+      text-shadow:0 10px 30px rgba(0,0,0,0.2);
+    }
+    .hero-center .scroll-down {
+      margin-top:30px; font-family:'Montserrat',sans-serif; font-size:0.85rem;
+      font-weight:600; letter-spacing:0.25em; text-transform:uppercase; color:var(--pink);
+      background: none; padding: 0; border-radius: 0; display: block;
+      backdrop-filter: none;
+    }
+    @keyframes heroTextFade {
+      from{opacity:0;transform:translate(-50%,-45%);}
+      to  {opacity:1;transform:translate(-50%,-50%);}
+    }
+    .hero-bottom {
+      position:relative; z-index:2; width:100%; padding:0 52px 40px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .hero-hint { display:flex; align-items:center; gap:14px; }
+    .hero-hint-line { width:40px; height:1px; background:rgba(255,255,255,0.4); }
+    .hero-hint-text { font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; color:rgba(255,255,255,0.6); }
+    .hero-title {
+      position:absolute; bottom:46px; left:52px; z-index:10;
+      line-height:0.9; user-select:none; text-align:left;
+    }
+    .hero-title .label {
+      display:block; font-family:'DM Sans',sans-serif; font-size:0.7rem; font-weight:500;
+      letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.6); margin-bottom:8px;
+    }
+    .hero-title .name {
+      display:block; font-family:'Bebas Neue',sans-serif; font-size:clamp(60px,8vw,110px);
+      font-weight:400; color:var(--white); letter-spacing:0.04em; text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal       { opacity:0; transform:translateY(28px); transition:all .8s cubic-bezier(.2,.8,.2,1); }
+    .reveal-left  { opacity:0; transform:translateX(-28px); transition:all .8s cubic-bezier(.2,.8,.2,1); }
+    .reveal-right { opacity:0; transform:translateX(28px);  transition:all .8s cubic-bezier(.2,.8,.2,1); }
+    .reveal.visible,.reveal-left.visible,.reveal-right.visible { opacity:1; transform:translate(0); }
+
+    /* ── INTRO ── */
+    #intro-statement { padding:64px 5vw; }
+    .intro-inner {
+      max-width:1160px; margin:0 auto;
+      display:grid; grid-template-columns:1fr 1.7fr; gap:60px; align-items:center;
+    }
+    .intro-eyebrow {
+      display:block; font-size:0.75rem; font-weight:700;
+      letter-spacing:0.25em; text-transform:uppercase; color:var(--olive); margin-bottom:16px;
+    }
+    .intro-title {
+      font-family:'Montserrat',sans-serif; font-size:clamp(2rem,3.5vw,3rem);
+      font-weight:700; color:var(--text-main); line-height:1.15; letter-spacing: -0.02em;
+    }
+    .intro-title em { font-style:normal; color:var(--pink); }
+    .intro-desc {
+      font-size:1.05rem; line-height:1.8; color:var(--text-muted);
+      border-left:2px solid var(--lime); padding-left:24px; margin-bottom:24px; font-weight: 400;
+    }
+    .fase-badge {
+      display:inline-flex; align-items:center; gap:10px;
+      background:var(--glass-bg); border:1px solid var(--glass-border);
+      border-radius:999px; padding:10px 24px; backdrop-filter:blur(10px);
+      font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:600;
+      letter-spacing:0.08em; text-transform:uppercase; color:var(--text-main); box-shadow: 0 4px 15px var(--glass-shadow);
+    }
+    .fase-dot {
+      width:8px; height:8px; border-radius:50%; background:var(--pink); box-shadow:0 0 10px rgba(224,163,187,0.8);
+      animation:pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot{0%,100%{transform:scale(1);}50%{transform:scale(1.4);opacity:.7;}}
+
+    /* ── TIMELINE ── */
+    #timeline-section { padding:46px 5vw; }
+    .tl-inner { max-width:1160px; margin:0 auto; }
+    .tl-head {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      margin-bottom:46px; gap:20px; flex-wrap:wrap;
+    }
+    .tl-eyebrow {
+      display:block; font-size:0.75rem; font-weight:700;
+      letter-spacing:0.25em; text-transform:uppercase; color:var(--olive); margin-bottom:12px;
+    }
+    .tl-heading {
+      font-family:'Montserrat',sans-serif; font-size:clamp(1.8rem,2.8vw,2.2rem);
+      font-weight:700; color:var(--text-main); letter-spacing: -0.02em;
+    }
+    .tl-tag {
+      font-family:'Montserrat',sans-serif; font-size:0.7rem; font-weight:600;
+      letter-spacing:0.1em; text-transform:uppercase;
+      background:var(--white); color:var(--pink); border: 1px solid var(--pink);
+      padding:8px 18px; border-radius:999px; align-self:center; white-space:nowrap;
+    }
+    .tl-track {
+      position:relative; display:flex; align-items:flex-start;
+    }
+    .tl-track::before {
+      content:''; position:absolute; top:25px; left:30px; right:30px; height:2px;
+      background:linear-gradient(90deg, var(--lime) 20%, rgba(255,255,255,0.6) 20%);
+      z-index:0; border-radius: 2px;
+    }
+    .tl-step {
+      flex:1; display:flex; flex-direction:column; align-items:center;
+      position:relative; z-index:1; padding:0 10px;
+    }
+    .tl-node {
+      width:52px; height:52px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Montserrat',sans-serif; font-size:0.85rem; font-weight:700;
+      transition:all .4s ease; backdrop-filter: blur(10px);
+    }
+    .tl-step.future  .tl-node { background:rgba(255,255,255,0.5); border:1px solid var(--white); color:var(--text-muted); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+    .tl-step.current .tl-node {
+      background:var(--pink); color:#fff; border:none; transform:scale(1.1); box-shadow: 0 8px 20px rgba(224,163,187,0.4);
+    }
+    .tl-label { margin-top:14px; text-align:center; }
+    .tl-phase {
+      display:block; font-size:0.65rem; font-weight:700;
+      letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px;
+    }
+    .tl-name {
+      font-family:'Montserrat',sans-serif; font-size:0.85rem; font-weight:600; color:var(--text-muted);
+    }
+    .tl-step.current .tl-phase { color:var(--olive); }
+    .tl-step.current .tl-name  { color:var(--text-main); }
+
+    /* ── BENTO GLASSMORPHISM ── */
+    #bento-section { padding:64px 5vw; }
+    .bento-head {
+      max-width:1160px; margin:0 auto 30px;
+      display:flex; align-items:flex-end; gap:20px;
+    }
+    .bento-eyebrow {
+      display:block; font-size:0.75rem; font-weight:700;
+      letter-spacing:0.25em; text-transform:uppercase; color:var(--olive); margin-bottom:12px;
+    }
+    .bento-heading {
+      font-family:'Montserrat',sans-serif; font-size:clamp(1.8rem,2.8vw,2.2rem);
+      font-weight:700; color:var(--text-main); letter-spacing: -0.02em;
+    }
+    .bento-line { flex:1; height:1px; background:rgba(0,0,0,0.05); margin-bottom:8px; min-width:30px; }
+
+    /* Grid */
+    .bg-grid-1 {
+      max-width:1160px; margin:0 auto; display:grid;
+      grid-template-columns:1.5fr 1fr 0.85fr; grid-template-rows:auto auto; gap:14px;
+    }
+    .bg-a1 { grid-column:1; grid-row:1/span 2; }
+    .bg-b1 { grid-column:2; grid-row:1; }
+    .bg-c1 { grid-column:3; grid-row:1; }
+    .bg-d1 { grid-column:2/span 2; grid-row:2; }
+
+    .bg-grid-2 {
+      max-width:1160px; margin:14px auto 0; display:grid;
+      grid-template-columns:1fr 1fr 1fr; gap:14px;
+    }
+    .bg-full { grid-column:1/-1; }
+
+    /* Card base Apple Glass */
+    .bc {
+      background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border); border-radius: 28px;
+      padding: 32px; overflow: hidden; position: relative; box-shadow: 0 10px 30px var(--glass-shadow);
+      transition: all .4s ease; display: flex; flex-direction: column;
+    }
+    .bc:hover { transform: translateY(-4px); box-shadow: 0 15px 40px rgba(0,0,0,0.06); background: rgba(255, 255, 255, 0.8); }
+    .bc-tag {
+      display:block; font-size:0.7rem; font-weight:700; letter-spacing:0.2em;
+      text-transform:uppercase; color:var(--olive); margin-bottom:14px;
+    }
+    .bc h3 {
+      font-family:'Montserrat',sans-serif; font-size:1.2rem; font-weight:700;
+      color:var(--text-main); margin-bottom:12px; line-height:1.3;
+    }
+    .bc p { font-size:0.95rem; color:var(--text-muted); line-height:1.7; margin-bottom:10px; font-weight: 400; }
+    .bc ul { list-style:none; margin-top:8px; flex:1; }
+    .bc ul li {
+      position:relative; padding-left:20px; margin-bottom:10px;
+      font-size:0.9rem; color:var(--text-muted); line-height:1.6;
+    }
+    .bc ul li::before {
+      content:''; position:absolute; left:0; top:8px;
+      width:6px; height:6px; border-radius:50%; background:var(--lime);
+    }
+    .bc ul li strong { color:var(--text-main); font-weight:600; }
+
+    /* Imágenes */
+    .bc-img { padding:0; min-height:210px; border-radius: 28px; }
+    .bc-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease; }
+    .bc-img:hover img { transform:scale(1.03); }
+
+    /* Stats Limpios */
+    .bc-stat { align-items:center; justify-content:center; text-align:center; min-height:150px; }
+    .stat-num  { font-family:'Bebas Neue',sans-serif; font-size:4.5rem; line-height:1; color:var(--pink); }
+    .stat-unit { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--olive); margin-left:4px; }
+    .stat-lbl  { font-size:0.7rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); margin-top:8px; }
+    
+    .bc-stat-2 .stat-num  { color:var(--olive); }
+    .bc-stat-2 .stat-unit { color:var(--pink); }
+
+    /* Metodología */
+    .m-steps { display:flex; align-items:center; gap:0; margin-top:18px; flex-wrap:wrap; }
+    .m-step  { display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; min-width:52px; }
+    .m-node  {
+      width:40px; height:40px; border-radius:50%;
+      background:var(--white); border:1px solid var(--blush);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:var(--pink);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+    .m-lbl   { font-size:0.65rem; font-weight:600; color:var(--text-muted); text-align:center; text-transform:uppercase; letter-spacing:0.05em; }
+    .m-arrow { width:24px; height:2px; background:var(--blush); flex-shrink:0; position:relative; }
+    .m-arrow::after {
+      content:''; position:absolute; right:-2px; top:-3px;
+      border:4px solid transparent; border-left-color:var(--blush);
+    }
+
+    /* Coordenadas - Estilo Claro */
+    .coord-chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; position:relative; z-index:1; }
+    .chip {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,0.8); border:1px solid rgba(255,255,255,0.9);
+      border-radius:999px; padding:8px 16px; font-size:0.85rem; color:var(--text-main); font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .chip-dot { width:6px; height:6px; border-radius:50%; background:var(--mist); flex-shrink:0; }
+    .chip.hi  { background:var(--blush); border-color:var(--pink); color: var(--pink); }
+    .chip.hi .chip-dot { background:var(--pink); }
+
+    /* ── NUEVA SECCIÓN: EVIDENCIA DE CONOCIMIENTO ── */
+    #conocimiento-section { padding:20px 5vw 64px; }
+    .con-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+    .con-span-2 { grid-column: span 2; }
+    .con-span-3 { grid-column: span 3; }
+    
+    @media(max-width:980px) {
+      .con-grid { grid-template-columns: repeat(2, 1fr); }
+      .con-span-3 { grid-column: span 2; }
+    }
+    @media(max-width:620px) {
+      .con-grid { grid-template-columns: 1fr; }
+      .con-span-2, .con-span-3 { grid-column: span 1; }
+    }
+
+    /* ── RECURSOS ── */
+    #recursos-section { padding:46px 5vw 80px; }
+    .rec-inner { max-width:1160px; margin:0 auto; }
+    .rec-head { margin-bottom:30px; }
+    .rec-eyebrow {
+      display:block; font-size:0.75rem; font-weight:700;
+      letter-spacing:0.25em; text-transform:uppercase; color:var(--olive); margin-bottom:12px;
+    }
+    .rec-heading {
+      font-family:'Montserrat',sans-serif; font-size:clamp(1.8rem,2.8vw,2.2rem);
+      font-weight:700; color:var(--text-main); letter-spacing: -0.02em;
+    }
+    .rec-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:16px; }
+    
+    .rec-card {
+      background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border); border-radius: 28px; overflow: hidden;
+      box-shadow: 0 10px 30px var(--glass-shadow);
+      transition: all .4s ease; display: flex; flex-direction: column;
+    }
+    .rec-card:hover { transform: translateY(-4px); box-shadow: 0 15px 40px rgba(0,0,0,0.06); background: rgba(255, 255, 255, 0.8); }
+    
+    .rec-top { padding:30px; position:relative; overflow:hidden; border-bottom: 1px solid rgba(255,255,255,0.6); }
+    .rec-top-speech { background: rgba(197, 204, 130, 0.2); } /* Lime tint */
+    .rec-top-doc    { background: rgba(244, 223, 230, 0.5); } /* Blush tint */
+    
+    .rec-icon {
+      width:48px; height:48px; border-radius:14px;
+      background:var(--white); display:flex; align-items:center;
+      justify-content:center; font-size:1.4rem; margin-bottom:14px; position:relative; z-index:1;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .rec-title { font-family:'Montserrat',sans-serif; font-size:1.25rem; font-weight:700; color:var(--text-main); position:relative; z-index:1; margin-bottom:6px; }
+    .rec-sub   { font-size:0.75rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--olive); position:relative; z-index:1; }
+    .rec-body  { padding:30px; flex:1; display:flex; flex-direction:column; }
+    .rec-desc  { font-size:0.95rem; color:var(--text-muted); line-height:1.7; margin-bottom:20px; flex:1; font-weight: 400;}
+    .video-wrapper {
+      position:relative; width:100%; padding-bottom:56.25%;
+      border-radius:16px; overflow:hidden; background:var(--white);
+      border:1px solid var(--glass-border);
+    }
+    .video-wrapper iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
+    
+    .doc-feats { display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+    .doc-feat {
+      display:flex; align-items:center; gap:12px;
+      background:rgba(255,255,255,0.5); border-radius:12px; padding:12px 16px;
+      font-size:0.9rem; color:var(--text-muted); font-weight:500; border: 1px solid var(--white);
+    }
+    .doc-feat-ic {
+      width:30px; height:30px; border-radius:8px; background:var(--white); display:flex; align-items:center; justify-content:center;
+      font-size:0.9rem; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.03);
+    }
+    .btn-doc {
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:14px 28px; border-radius:999px;
+      background: var(--pink); color:#fff; text-decoration:none;
+      font-family:'Montserrat',sans-serif; font-weight:600; font-size:0.85rem;
+      letter-spacing:0.05em; width:max-content;
+      box-shadow: 0 4px 15px rgba(224,163,187,0.3); transition:all .3s ease;
+    }
+    .btn-doc:hover { transform:translateY(-2px); box-shadow: 0 8px 20px rgba(224,163,187,0.5); background: #d48da9; }
+    .btn-doc svg { width:16px; height:16px; flex-shrink:0; }
+
+    /* ── FOOTER ── */
+    footer {
+      background:var(--blush); color:var(--text-main);
+      padding:70px 5vw;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+    }
+    .footer-content { max-width:800px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+    .footer-title { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; letter-spacing:0.1em; color:var(--text-main); margin-bottom: 5px; }
+    .footer-text  { font-size:0.95rem; line-height:1.7; color:var(--text-muted); text-align:center; }
+    .footer-contact { margin-top:20px; text-align:center; }
+    .footer-contact a { display:block; color:var(--olive); font-weight:600; text-decoration:none; margin:6px 0; transition:color .3s ease; }
+    .footer-contact a:hover { color:var(--text-main); text-decoration:underline; }
+
+    /* ── RESPONSIVE COMPLEMENTARIO ── */
+    @media(max-width:980px){
+      .bg-grid-1 { grid-template-columns:1fr 1fr; }
+      .bg-a1 { grid-column:1/-1; grid-row:auto; }
+      .bg-d1 { grid-column:1/-1; }
+      .bg-grid-2 { grid-template-columns:1fr 1fr; }
+      .bg-full { grid-column:1/-1; }
+      .rec-grid { grid-template-columns:1fr; }
+      .intro-inner { grid-template-columns:1fr; gap:36px; }
+    }
+    @media(max-width:620px){
+      .bg-grid-1,.bg-grid-2 { grid-template-columns:1fr; }
+      .bg-a1,.bg-b1,.bg-c1,.bg-d1 { grid-column:1; grid-row:auto; }
+      .tl-track { flex-direction:column; gap:20px; }
+      .tl-track::before { display:none; }
+      .tl-step { flex-direction:row; align-items:center; gap:16px; }
+      .tl-label { margin-top:0; text-align:left; }
+      .m-arrow { display:none; }
+      .hero-title .name { font-size:clamp(56px,14vw,90px); }
+      .bc { padding: 24px; }
+      .rec-top, .rec-body { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav aria-label="Navegación principal">
+    <div class="nav-island">
+      <a href="index.html" class="nav-link">Home</a>
+      <div class="nav-dot"></div>
+      <a href="semestres.html" class="nav-link">Semestres</a>
+      <div class="nav-dot"></div>
+      <a href="nosotros.html" class="nav-link">Nosotros</a>
+    </div>
+  </nav>
+
+  <section id="hero">
+    <video id="hero-video" src="img/robber3.mp4" autoplay muted playsinline></video>
+
+    <div class="hero-title">
+      <span class="label">Proyecto</span>
+      <span class="name">MAD-SAN</span>
+    </div>
+
+    <div class="hero-center">
+      <span class="eyebrow">Semestre en Curso</span>
+      <h1>DETALLES TÉCNICOS</h1>
+      <p class="scroll-down">SCROLL DOWN</p>
+    </div>
+
+    <div class="hero-bottom">
+      <div class="hero-hint">
+        <div class="hero-hint-line"></div>
+        <span class="hero-hint-text">Explorar detalles</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="intro-statement">
+    <div class="intro-inner">
+      <div class="reveal-left">
+        <span class="intro-eyebrow">Estado Actual</span>
+        <h2 class="intro-title">Semestre en<br><em>Ejecución</em></h2>
+      </div>
+      <div class="reveal-right">
+        <p class="intro-desc">
+          Nos encontramos ejecutando la <strong>Fase 1: Investigación y análisis</strong>. Durante este periodo realizamos la búsqueda profunda de información sobre robótica agrícola, sistemas de siembra y tecnologías en robots móviles. Analizamos proyectos implementados en otros países y logramos identificar con precisión los componentes mecánicos y electrónicos necesarios para nuestro prototipo funcional.
+        </p>
+        <div class="fase-badge">
+          <div class="fase-dot"></div>
+          Fase activa: Investigación y Análisis
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="timeline-section">
+    <div class="tl-inner">
+      <div class="tl-head reveal">
+        <div>
+          <span class="tl-eyebrow">Hoja de Ruta</span>
+          <h2 class="tl-heading">Evolución del Proyecto</h2>
+        </div>
+        <div class="tl-tag">▶ Fase 1 Activa</div>
+      </div>
+      <div class="tl-track reveal">
+        <div class="tl-step current">
+          <div class="tl-node">01</div>
+          <div class="tl-label">
+            <span class="tl-phase">Fase 01 (Actual)</span>
+            <div class="tl-name">Investigación y análisis de sistemas de siembra y robótica móvil.</div>
+          </div>
+        </div>
+        <div class="tl-step future">
+          <div class="tl-node">02</div>
+          <div class="tl-label">
+            <span class="tl-phase">Fase 02</span>
+            <div class="tl-name">Diseño conceptual, mecánico y de la arquitectura del sistema de control.</div>
+          </div>
+        </div>
+        <div class="tl-step future">
+          <div class="tl-node">03</div>
+          <div class="tl-label">
+            <span class="tl-phase">Fase 03</span>
+            <div class="tl-name">Construcción del prototipo, integración de componentes y programación.</div>
+          </div>
+        </div>
+        <div class="tl-step future">
+          <div class="tl-node">04</div>
+          <div class="tl-label">
+            <span class="tl-phase">Fase 04</span>
+            <div class="tl-name">Pruebas de funcionamiento en terreno agrícola y ajustes de precisión.</div>
+          </div>
+        </div>
+        <div class="tl-step future">
+          <div class="tl-node">05</div>
+          <div class="tl-label">
+            <span class="tl-phase">Fase 05</span>
+            <div class="tl-name">Documentación final, análisis de resultados y presentación del proyecto integrador.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bento-section">
+    <div class="bento-head reveal">
+      <div>
+        <span class="bento-eyebrow">Hardware y Sistema</span>
+        <h2 class="bento-heading">Elementos y Componentes</h2>
+      </div>
+      <div class="bento-line"></div>
+    </div>
+
+    <div class="bg-grid-1">
+      <div class="bc bg-a1 reveal-left">
+        <span class="bc-tag">Arquitectura Física</span>
+        <h3>Hardware del Rover</h3>
+        <p>Componentes principales definidos para la construcción del Rover de siembra automatizada:</p>
+        <ul>
+          <li><strong>Plataforma móvil:</strong> Estructura adaptativa con ruedas de tracción todo terreno.</li>
+          <li><strong>Microcontrolador:</strong> Sistema de control central basado en la familia Arduino.</li>
+          <li><strong>Actuadores:</strong> Motores DC acoplados a sus respectivos controladores de potencia.</li>
+          <li><strong>Almacenamiento:</strong> Depósito interno de alta capacidad para las semillas.</li>
+          <li><strong>Mecanismo Efector:</strong> Sistema mecánico tipo garra o dispensador de semillas.</li>
+          <li><strong>Navegación:</strong> Sensores de precisión y posicionamiento (posible integración de GPS).</li>
+          <li><strong>Energía:</strong> Batería de alimentación recargable para autonomía en campo.</li>
+        </ul>
+      </div>
+
+      <div class="bc bg-b1 bc-img reveal">
+        <img src="img/bento5.png" alt="Componente Rover 1">
+      </div>
+
+      <div class="bc bg-c1 bc-stat reveal-right">
+        <span class="stat-num">50<span class="stat-unit">cm</span></span>
+        <div class="stat-lbl">Entre siembras</div>
+      </div>
+
+      <div class="bc bg-d1 reveal">
+        <span class="bc-tag">Actividad del Semestre</span>
+        <h3>¿Qué hicimos este semestre?</h3>
+        <p>Nos encontramos ejecutando la <strong>Fase 1: Investigación y análisis</strong>. Realizamos la búsqueda profunda de información sobre robótica agrícola, sistemas de siembra y tecnologías en robots móviles. Analizamos proyectos implementados en otros países y logramos identificar los componentes mecánicos y electrónicos necesarios para nuestro prototipo funcional.</p>
+      </div>
+    </div>
+
+    <div class="bg-grid-2">
+      <div class="bc bc-stat-2 reveal">
+        <span class="stat-num">90<span class="stat-unit">°</span></span>
+        <div class="stat-lbl">Giro de precisión</div>
+      </div>
+
+      <div class="bc bc-img reveal" style="min-height:220px;">
+        <img src="img/bento6.png" alt="Componente Rover 2">
+      </div>
+
+      <div class="bc bc-metodo reveal-right">
+        <span class="bc-tag">Proceso</span>
+        <h3>Flujo de Siembra</h3>
+        <div class="m-steps">
+          <div class="m-step"><div class="m-node">①</div><div class="m-lbl">Inicio</div></div>
+          <div class="m-arrow"></div>
+          <div class="m-step"><div class="m-node">②</div><div class="m-lbl">Avance</div></div>
+          <div class="m-arrow"></div>
+          <div class="m-step"><div class="m-node">③</div><div class="m-lbl">Siembra</div></div>
+          <div class="m-arrow"></div>
+          <div class="m-step"><div class="m-node">④</div><div class="m-lbl">Giro 90°</div></div>
+          <div class="m-arrow"></div>
+          <div class="m-step"><div class="m-node">⑤</div><div class="m-lbl">Ciclo</div></div>
+        </div>
+      </div>
+
+      <div class="bc bc-coords bg-full reveal">
+        <span class="bc-tag">Lógica de Control</span>
+        <h3>Metodología de Siembra por Coordenadas</h3>
+        <p>El sistema se basa en instrucciones de navegación exactas. El Rover parte de (0,0), avanza a (10,0) y desde ahí hasta (10,20) activa la siembra cada 50 cm. Al terminar gira 90° y repite el ciclo para garantizar una distribución perfecta.</p>
+        <div class="coord-chips">
+          <span class="chip"><span class="chip-dot"></span>Inicio (0, 0)</span>
+          <span class="chip"><span class="chip-dot"></span>Avance → (10, 0)</span>
+          <span class="chip hi"><span class="chip-dot"></span>Siembra activa: (10, 0) → (10, 20)</span>
+          <span class="chip"><span class="chip-dot"></span>Giro 90° izq.</span>
+          <span class="chip"><span class="chip-dot"></span>Nueva línea → Ciclo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="conocimiento-section">
+    <div class="rec-inner">
+      <div class="rec-head reveal">
+        <span class="rec-eyebrow">Fundamentos Teóricos</span>
+        <h2 class="rec-heading">Evidencia de Conocimiento</h2>
+      </div>
+      
+      <div class="con-grid">
+        
+        <div class="bc con-span-2 reveal-left">
+          <span class="bc-tag">Arquitectura Core</span>
+          <h3>Infraestructura de hardware y software</h3>
+          <ul>
+            <li><strong>Hardware:</strong> La arquitectura física del robot MAD-SAN está centralizada en un microcontrolador, específicamente de la familia Arduino u otro sistema de control análogo. La estructura incluye una plataforma móvil con ruedas todo terreno, un depósito o tanque para el almacenamiento de semillas, motores DC acoplados a controladores de potencia, y un mecanismo efector tipo garra o dispensador mecánico.</li>
+            <li><strong>Software:</strong> La infraestructura de software opera a través de un sistema de control programable. El código está diseñado para interpretar instrucciones de navegación espacial, permitiendo al robot desplazarse mediante rutas o coordenadas definidas (por ejemplo, avanzar desde una coordenada inicial (0,0) hasta (10,0) y programar la caída de una semilla cada 50 cm).</li>
+          </ul>
+        </div>
+
+        <div class="bc reveal-right">
+          <span class="bc-tag">Percepción</span>
+          <h3>Instrumentación y Sensores</h3>
+          <p>Para garantizar la precisión en el terreno, el robot agrícola integra sensores de navegación, incluyendo la posible incorporación de un módulo GPS para ubicarse exactamente en el área de cultivo.</p>
+          <p>Adicionalmente, bajo el enfoque de agricultura de precisión, el sistema proyecta el uso de sensores para recolectar información vital del entorno, permitiendo monitorear variables como las condiciones del suelo, el clima y la humedad.</p>
+        </div>
+
+        <div class="bc reveal-left">
+          <span class="bc-tag">Energía</span>
+          <h3>Elementos de Potencia</h3>
+          <p>La fuerza motriz del Rover proviene de motores DC, los cuales son regulados por controladores de motores dedicados para sortear terrenos agrícolas irregulares, secos o pantanosos.</p>
+          <p>Toda la demanda energética del hardware (microcontrolador, sensores y actuadores mecánicos) es suministrada por una batería de alimentación, la cual le otorga al robot la autonomía necesaria para operar de manera independiente en el campo.</p>
+        </div>
+
+        <div class="bc reveal">
+          <span class="bc-tag">Lógica Industrial</span>
+          <h3>Conceptos PLC</h3>
+          <p>Independientemente de que el cerebro del MAD-SAN sea un microcontrolador (sistema embebido), el proyecto aplica conceptos fundamentales de los PLC mediante la implementación de un sistema de control programable para automatizar tareas repetitivas.</p>
+          <p>El sistema opera leyendo entradas (datos de los sensores de navegación/GPS) y ejecutando un algoritmo secuencial para accionar salidas físicas (los motores DC y la garra dispensadora). Sigue una lógica de automatización por pasos estrictos: posicionarse, avanzar una distancia específica, detenerse, accionar el efector mecánico para sembrar, y girar.</p>
+        </div>
+
+        <div class="bc con-span-3 reveal-right">
+          <span class="bc-tag">Conectividad</span>
+          <h3>Paradigma IoT (Internet de las Cosas)</h3>
+          <p>El proyecto se inscribe firmemente en la agricultura de precisión, un pilar del IoT industrial, que busca optimizar los recursos mediante sensores y herramientas automatizadas.</p>
+          <p>El robot MAD-SAN funciona como un dispositivo inteligente en el campo capaz de recolectar información en tiempo real sobre las condiciones de la tierra, la temperatura y la humedad. Aunque el documento reconoce que un desafío para esta tecnología es la falta de infraestructura de internet estable en zonas rurales, el paradigma IoT se cumple al transformar un simple vehículo en un nodo de recolección de datos y monitoreo que reemplaza la supervisión manual del cultivo.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section id="recursos-section">
+    <div class="rec-inner">
+      <div class="rec-head reveal">
+        <span class="rec-eyebrow">Material de Apoyo</span>
+        <h2 class="rec-heading">Recursos del Proyecto</h2>
+      </div>
+      <div class="rec-grid">
+
+        <div class="rec-card reveal-left">
+          <div class="rec-top rec-top-speech">
+            <div class="rec-icon">🎙️</div>
+            <div class="rec-title">Speech Técnico</div>
+            <div class="rec-sub">Presentación oficial del proyecto</div>
+          </div>
+          <div class="rec-body">
+            <p class="rec-desc">Conoce a fondo los objetivos, la problemática que resolvemos y la justificación detrás de la innovación de MAD-SAN a través de nuestra presentación oficial del proyecto.</p>
+            <div class="video-wrapper">
+              <iframe
+                src=""
+                title="Speech Técnico MAD-SAN"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class="rec-card reveal-right">
+          <div class="rec-top rec-top-doc">
+            <div class="rec-icon">📄</div>
+            <div class="rec-title">Documento Técnico</div>
+            <div class="rec-sub">Base teórica completa del rover</div>
+          </div>
+          <div class="rec-body">
+            <p class="rec-desc">Información técnica y teórica detallada: antecedentes de robótica agrícola, diagrama de Gantt, marco metodológico y justificaciones del sistema.</p>
+            <div class="doc-feats">
+              <div class="doc-feat"><div class="doc-feat-ic">🌿</div>Antecedentes de robótica agrícola global</div>
+              <div class="doc-feat"><div class="doc-feat-ic">⚙️</div>Marco metodológico y justificación del sistema</div>
+            </div>
+            <a href="img/documentoproyecto.pdf" target="_blank" class="btn-doc">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Abrir Documento PDF
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="footer-content">
+      <h2 class="footer-title">MAD-SAN</h2>
+      <p class="footer-text">
+        <strong>Universidad San Buenaventura, Bogotá - 2026</strong><br>
+        Tecnología en Automatización Industrial
+      </p>
+      <p class="footer-text" style="font-weight:700;">Desarrollado por: Andrea Castro y Mariana Navarro</p>
+      <div class="footer-contact">
+        <p>Contáctanos:</p>
+        <a href="mailto:mnavarroo1@academia.usbbog.edu.co">mnavarroo1@academia.usbbog.edu.co</a>
+        <a href="mailto:facastroc@academia.usbbog.edu.co">facastroc@academia.usbbog.edu.co</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Video: parar al final, sin repetir */
+    const heroVideo = document.getElementById('hero-video');
+    if (heroVideo) heroVideo.addEventListener('ended', () => heroVideo.pause());
+
+    /* Smooth scroll navbar */
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', e => {
+        const href = link.getAttribute('href');
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          const t = document.querySelector(href);
+          if (t) t.scrollIntoView({ behavior:'smooth' });
+        }
+      });
+    });
+
+    /* Scroll reveal con stagger suave */
+    const revEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); }
+      });
+    }, { threshold:0.1 });
+    revEls.forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 5) * 55}ms`;
+      obs.observe(el);
+    });
+  </script>
+</body>
+</html>

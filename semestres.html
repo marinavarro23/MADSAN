@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MAD-SAN | Semestres</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    
+    :root {
+      /* NUEVA PALETA DE COLORES */
+      --color-1: #F4DFE6; /* Rosa pastel muy claro */
+      --color-2: #E0A3BB; /* Rosa medio */
+      --color-3: #D6E6E7; /* Azul/gris pastel (Fondo principal) */
+      --color-4: #C5CC82; /* Verde oliva claro */
+      --color-5: #97A13B; /* Verde oliva oscuro */
+      
+      --white: #ffffff; 
+      --black: #1d1d1f; /* Negro estilo Apple (más suave) */
+      --text-muted: #6e6e73;
+      
+      /* Variables Glassmorphism Apple */
+      --glass-bg: rgba(255, 255, 255, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: rgba(0, 0, 0, 0.04);
+      --glass-highlight: rgba(255, 255, 255, 0.8);
+      
+      --footer-bg: var(--color-1);
+    }
+    
+    html,body { 
+      width:100%; 
+      min-height:100%; 
+      background: var(--color-3); 
+      color: var(--black); 
+      font-family:'DM Sans',sans-serif; 
+      overflow-x:hidden; 
+      scroll-behavior:smooth;
+    }
+
+    /* NAVBAR */
+    nav { position:fixed; top:22px; left:50%; transform:translateX(-50%); z-index:100; }
+    .nav-island {
+      display:flex; align-items:center; gap:6px; padding:7px 10px; border-radius:999px;
+      background:rgba(255,255,255,0.15); backdrop-filter:blur(24px) saturate(180%);
+      -webkit-backdrop-filter:blur(24px) saturate(180%);
+      border:1px solid rgba(255,255,255,0.3);
+      box-shadow:0 8px 32px rgba(0,0,0,0.1), 0 1.5px 0 rgba(255,255,255,0.4) inset;
+      position:relative; overflow:hidden;
+    }
+    .nav-island::before {
+      content:''; position:absolute; top:0; left:0; width:60%; height:100%;
+      background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,0.3) 50%,transparent 70%);
+      transform:translateX(-150%); animation:liquid-shimmer 3.5s ease-in-out infinite;
+      pointer-events:none; z-index:0;
+    }
+    @keyframes liquid-shimmer {
+      0%{transform:translateX(-150%);opacity:0} 20%{opacity:1} 80%{opacity:1} 100%{transform:translateX(250%);opacity:0}
+    }
+    .nav-link {
+      position:relative; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:500;
+      color:rgba(255,255,255,0.9); text-decoration:none; padding:6px 16px;
+      border-radius:999px; letter-spacing:0.02em; transition:all .3s ease; white-space:nowrap; z-index:2;
+    }
+    .nav-link:hover,.nav-link.active { color:var(--black); background:rgba(255,255,255,0.85); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .nav-dot { width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,0.4); flex-shrink:0; position:relative; z-index:2; }
+
+    /* HERO */
+    #hero {
+      position:relative; width:100%; height:100vh; overflow:hidden; display:flex; align-items:flex-end;
+    }
+    #hero video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+    #hero::after {
+      content:''; position:absolute; inset:0; z-index:1;
+      background:linear-gradient(to bottom, transparent 20%, rgba(29, 29, 31, 0.85) 100%);
+      pointer-events:none;
+    }
+
+    .hero-center {
+      position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index:3;
+      text-align:center; color:#fff; opacity:0; animation:heroTextFade 1.4s ease forwards; animation-delay:1.5s; pointer-events:none;
+    }
+    .hero-center .eyebrow {
+      font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:0.3em;
+      text-transform:uppercase; color:rgba(255,255,255,0.8); margin-bottom:12px; display:block;
+    }
+    .hero-center h1 {
+      font-family:'Montserrat',sans-serif; font-size:clamp(50px, 7vw, 90px); font-weight:700;
+      letter-spacing:0.02em; line-height:1.1; color:#fff; text-shadow:0 10px 30px rgba(0,0,0,0.2);
+    }
+    .hero-center .sub {
+      margin-top:14px; font-size:1.1rem; color:rgba(255,255,255,0.85); letter-spacing:0.05em;
+      font-style:italic; font-weight: 300;
+    }
+    .hero-center .scroll-down {
+      margin-top: 30px; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 600;
+      letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-2);
+    }
+
+    @keyframes heroTextFade {
+      from { opacity:0; transform:translate(-50%, -45%); }
+      to   { opacity:1; transform:translate(-50%, -50%); }
+    }
+
+    .hero-bottom {
+      position:relative; z-index:2; width:100%; padding:0 52px 48px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .hero-hint { display:flex; align-items:center; gap:14px; }
+    .hero-hint-line { width:40px; height:1px; background:rgba(255,255,255,0.4); }
+    .hero-hint-text { font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; color:rgba(255,255,255,0.6); }
+
+    .hero-title { position: absolute; bottom: 52px; left: 52px; z-index: 10; line-height: 0.9; user-select: none; }
+    .hero-title .label {
+      display: block; font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px;
+    }
+    .hero-title .name {
+      display: block; font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px, 8vw, 110px);
+      font-weight: 400; color: var(--white); letter-spacing: 0.04em;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    }
+
+    /* SEMESTRES HUB */
+    #semestres-hub {
+      width:100%; background:var(--color-3); padding:120px 0 160px; overflow:hidden; position:relative;
+    }
+    #semestres-hub::before {
+      content:''; position:absolute; inset:0;
+      background-image:radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size:32px 32px; pointer-events:none;
+    }
+
+    .section-header { text-align:center; margin-bottom:80px; position:relative; z-index:2; }
+    .section-header .eyebrow {
+      font-family:'DM Sans',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:0.25em;
+      text-transform:uppercase; color:var(--text-muted); margin-bottom:14px; display:block;
+    }
+    .section-header h2 {
+      font-family:'Montserrat',sans-serif; font-size:clamp(2.5rem, 4vw, 4rem); font-weight:700;
+      letter-spacing:0.02em; color:var(--color-5); line-height:1.1;
+    }
+    .section-header .sub {
+      margin-top:16px; font-size:1.1rem; color:var(--text-muted); letter-spacing:0.05em; font-weight: 300;
+    }
+
+    /* GALERÍA ESTILO BENTO / APPLE */
+    .gallery-wrap { position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:0 40px; }
+
+    .h-line {
+      position:absolute; z-index:0; top:90px; left:calc(40px + 12.5%); right:calc(40px + 12.5%); height:1px;
+      background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 15%, rgba(255,255,255,0.8) 85%, transparent 100%);
+    }
+
+    .gallery-row { display:flex; align-items:flex-start; gap:20px; } /* Añadido gap para separar tarjetas suavemente */
+
+    .sem-card {
+      flex:1; display:flex; flex-direction:column; align-items:center; cursor:pointer; position:relative; z-index:1;
+    }
+
+    .card-num {
+      font-family:'Montserrat',sans-serif; font-weight:600; font-size:1.2rem; letter-spacing:0.15em;
+      color:var(--color-5); margin-bottom:20px; transition:all 0.4s ease; opacity: 0.6;
+    }
+    .sem-card:hover .card-num, .sem-card.active .card-num { color:var(--ac); opacity: 1; transform: scale(1.1); }
+
+    .flower-ring {
+      width:160px; height:160px; border-radius:50%;
+      border:1px solid rgba(255,255,255,0.8);
+      background:var(--glass-bg); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      display:flex; align-items:center; justify-content:center; position:relative;
+      transition:all .5s cubic-bezier(.2,.8,.2,1);
+      box-shadow: 0 10px 30px var(--glass-shadow);
+    }
+    .sem-card:hover .flower-ring, .sem-card.active .flower-ring {
+      border-color:var(--ac); background:rgba(255,255,255,0.85);
+      transform:translateY(-8px);
+      box-shadow:0 20px 40px rgba(0,0,0,0.06), 0 0 20px color-mix(in srgb, var(--ac) 15%, transparent);
+    }
+    .flower-ring svg { width:100px; height:100px; transition:all .5s ease; opacity: 0.9; }
+    .sem-card:hover .flower-ring svg, .sem-card.active .flower-ring svg { opacity: 1; transform: scale(1.05); }
+
+    .stem {
+      width:1px; height:35px; background:linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
+      transition:background .4s; flex-shrink:0; margin-top: 5px; margin-bottom: 5px;
+    }
+    .sem-card:hover .stem, .sem-card.active .stem { background:linear-gradient(to bottom, var(--ac), transparent); }
+
+    .card-box {
+      width:100%; padding:24px 20px;
+      border:1px solid var(--glass-border); border-radius:24px; /* Radio más redondeado y limpio */
+      background:var(--glass-bg); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+      text-align:center; position:relative; overflow:hidden;
+      transition:all .5s cubic-bezier(.2,.8,.2,1);
+      box-shadow: 0 8px 24px var(--glass-shadow);
+    }
+    .sem-card:hover .card-box, .sem-card.active .card-box {
+      border-color:rgba(255,255,255,0.9); background:rgba(255,255,255,0.75);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.06); transform: translateY(-4px);
+    }
+
+    .card-label {
+      font-family:'Montserrat',sans-serif; font-weight:600; font-size:1.1rem;
+      text-transform:uppercase; letter-spacing:0.05em; color:var(--black); margin-bottom:10px;
+    }
+    .card-sub {
+      font-size:0.9rem; color:var(--text-muted); line-height:1.5; margin-bottom:16px; font-weight: 400;
+    }
+    .card-cta {
+      display:inline-flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:600; letter-spacing:0.08em;
+      text-transform:uppercase; color:var(--ac); background:none; border:none; cursor:pointer; font-family:'DM Sans',sans-serif;
+      opacity:0; transform:translateY(8px); transition:all .4s ease;
+    }
+    .sem-card:hover .card-cta, .sem-card.active .card-cta { opacity:1; transform:translateY(0); }
+
+    /* EXPANDED INFO BENTO */
+    .exp-wrap {
+      position:relative; z-index:2; max-width:1000px; margin:0 auto; padding:0 40px;
+      overflow:hidden; max-height:0; opacity:0;
+      transition:max-height .6s cubic-bezier(.2,.8,.2,1), opacity .4s ease;
+    }
+    .exp-wrap.open { max-height:400px; opacity:1; }
+    
+    .exp-inner {
+      margin-top:40px; border:1px solid rgba(255,255,255,0.8); border-radius:32px;
+      background:rgba(255,255,255,0.5); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+      padding:40px; display:flex; align-items:center; gap:40px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+    }
+    .exp-bar {
+      width:4px; min-height:80px; border-radius:4px; background:var(--ep-color,#7ed4a0); flex-shrink:0;
+    }
+    .exp-body { flex:1; }
+    
+    .exp-tag {
+      font-size:0.75rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
+      color:var(--text-muted); margin-bottom:12px; display:block;
+    }
+    .exp-title { 
+      font-family:'Montserrat',sans-serif; font-weight:700; font-size:1.8rem;
+      color:var(--black); margin-bottom:16px; letter-spacing: -0.02em;
+    }
+    .exp-desc { 
+      font-size:1.05rem; color:#4a4a4e; line-height:1.7; font-weight: 400;
+    }
+    .exp-btn {
+      flex-shrink:0; display:inline-flex; align-items:center; gap:8px; padding:14px 28px; border-radius:999px;
+      background: var(--white); border:1px solid rgba(0,0,0,0.05); color:var(--black); text-decoration:none;
+      font-size:0.85rem; font-weight:600; letter-spacing:0.05em; box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      transition:all .3s ease;
+    }
+    .exp-btn:hover { border-color:var(--ep-color,#7ed4a0); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); color: var(--ep-color); }
+
+    /* FOOTER */
+    footer {
+      background:var(--footer-bg); color:var(--black); padding:80px 5vw;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+    }
+    .footer-content { max-width:800px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .footer-title { font-family:'Bebas Neue',sans-serif; font-size:3rem; letter-spacing:0.1em; color:var(--black); }
+    .footer-text { font-size:0.95rem; line-height:1.6; color:#444; text-align:center; font-weight: 400; }
+    .footer-contact { margin-top:24px; text-align:center; }
+    .footer-contact a { display:block; color:var(--color-5); font-weight:600; text-decoration:none; margin:6px 0; transition:color .3s; }
+    .footer-contact a:hover { color:var(--black); text-decoration:underline; }
+  </style>
+</head>
+<body>
+
+<nav aria-label="Navegación principal">
+  <div class="nav-island">
+    <a href="index.html" class="nav-link">Home</a>
+    <div class="nav-dot"></div>
+    <a href="semestres.html" class="nav-link active">Semestres</a>
+    <div class="nav-dot"></div>
+    <a href="nosotros.html" class="nav-link">Nosotros</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <video id="hero-video" src="img/robotsemestres.mp4" autoplay muted playsinline></video>
+
+  <div class="hero-title">
+    <span class="label">Proyecto</span>
+    <span class="name">MAD-SAN</span>
+  </div>
+
+  <div class="hero-center">
+    <span class="eyebrow">Evolución del Proyecto</span>
+    <h1>SEMESTRES</h1>
+    <p class="sub">Cada etapa, una floración distinta</p>
+    <p class="scroll-down">SCROLL DOWN</p>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-hint">
+      <div class="hero-hint-line"></div>
+      <span class="hero-hint-text">Explorar semestres</span>
+    </div>
+  </div>
+</section>
+
+<section id="semestres-hub">
+  <div class="section-header">
+    <span class="eyebrow">Evolución del Proyecto</span>
+    <h2>SEMESTRES</h2>
+    <p class="sub">Cada etapa, una floración distinta</p>
+  </div>
+
+  <div class="gallery-wrap">
+    <div class="h-line"></div>
+
+    <div class="gallery-row">
+
+      <div class="sem-card" style="--ac: var(--color-2)" onclick="toggle(0)">
+        <span class="card-num">01</span>
+        <div class="flower-ring">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="r1b" cx="38%" cy="32%" r="65%">
+                <stop offset="0%" stop-color="#F4DFE6"/><stop offset="50%" stop-color="#E0A3BB"/><stop offset="100%" stop-color="#C5CC82"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="60" cy="32" rx="14" ry="22" fill="url(#r1b)" opacity=".9" transform="rotate(0,60,60)"/>
+            <ellipse cx="60" cy="32" rx="14" ry="22" fill="url(#r1b)" opacity=".9" transform="rotate(51,60,60)"/>
+            <ellipse cx="60" cy="32" rx="14" ry="22" fill="url(#r1b)" opacity=".9" transform="rotate(102,60,60)"/>
+            <ellipse cx="60" cy="32" rx="14" ry="22" fill="url(#r1b)" opacity=".9" transform="rotate(153,60,60)"/>
+            <ellipse cx="60" cy="32" rx="14" ry="22" fill="url(#r1b)" opacity=".9" transform="rotate(204,60,60)"/>
+            <ellipse cx="60" cy="32" rx="14" ry="22" fill="url(#r1b)" opacity=".9" transform="rotate(255,60,60)"/>
+            <ellipse cx="60" cy="32" rx="14" ry="22" fill="url(#r1b)" opacity=".9" transform="rotate(306,60,60)"/>
+            <circle cx="60" cy="60" r="12" fill="#FFFFFF"/>
+            <circle cx="60" cy="60" r="7"  fill="#F4DFE6"/>
+            <circle cx="60" cy="60" r="3.5" fill="#E0A3BB"/>
+          </svg>
+        </div>
+        <div class="stem"></div>
+        <div class="card-box">
+          <div class="card-label">Semestre 1</div>
+          <div class="card-sub">En el 4to semestre MAD-SAN realizó un cambio de enfoque a un proyecto más acorde a la automatización.</div>
+          <button class="card-cta" onclick="event.stopPropagation();toggle(0)">Ver resultados →</button>
+        </div>
+      </div>
+
+      <div class="sem-card" style="--ac: var(--color-4)" onclick="toggle(1)">
+        <span class="card-num">02</span>
+        <div class="flower-ring">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="sg1" cx="40%" cy="30%" r="65%">
+                <stop offset="0%" stop-color="#F4DFE6"/><stop offset="60%" stop-color="#C5CC82"/><stop offset="100%" stop-color="#97A13B"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" transform="rotate(0,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" transform="rotate(30,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" transform="rotate(60,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" transform="rotate(90,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" transform="rotate(120,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" transform="rotate(150,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" opacity=".85" transform="rotate(180,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" opacity=".85" transform="rotate(210,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" opacity=".85" transform="rotate(240,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" opacity=".85" transform="rotate(270,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" opacity=".85" transform="rotate(300,60,60)"/>
+            <ellipse cx="60" cy="28" rx="7" ry="18" fill="url(#sg1)" opacity=".85" transform="rotate(330,60,60)"/>
+            <circle cx="60" cy="60" r="16" fill="#FFFFFF"/>
+            <circle cx="60" cy="60" r="10" fill="#E0A3BB"/>
+            <circle cx="60" cy="60" r="5" fill="#97A13B"/>
+          </svg>
+        </div>
+        <div class="stem"></div>
+        <div class="card-box">
+          <div class="card-label">Semestre 2</div>
+          <div class="card-sub">En el 4to semestre MAD-SAN realizó un cambio de enfoque a un proyecto más acorde a la automatización.</div>
+          <button class="card-cta" onclick="event.stopPropagation();toggle(1)">Ver resultados →</button>
+        </div>
+      </div>
+
+      <div class="sem-card" style="--ac: var(--color-5)" onclick="toggle(2)">
+        <span class="card-num">03</span>
+        <div class="flower-ring">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="lv1" cx="40%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#D6E6E7"/><stop offset="55%" stop-color="#C5CC82"/><stop offset="100%" stop-color="#97A13B"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="60" cy="33" rx="13" ry="21" fill="url(#lv1)" opacity=".9" transform="rotate(0,60,60)"/>
+            <ellipse cx="60" cy="33" rx="13" ry="21" fill="url(#lv1)" opacity=".9" transform="rotate(51,60,60)"/>
+            <ellipse cx="60" cy="33" rx="13" ry="21" fill="url(#lv1)" opacity=".9" transform="rotate(102,60,60)"/>
+            <ellipse cx="60" cy="33" rx="13" ry="21" fill="url(#lv1)" opacity=".9" transform="rotate(153,60,60)"/>
+            <ellipse cx="60" cy="33" rx="13" ry="21" fill="url(#lv1)" opacity=".9" transform="rotate(204,60,60)"/>
+            <ellipse cx="60" cy="33" rx="13" ry="21" fill="url(#lv1)" opacity=".9" transform="rotate(255,60,60)"/>
+            <ellipse cx="60" cy="33" rx="13" ry="21" fill="url(#lv1)" opacity=".9" transform="rotate(306,60,60)"/>
+            <circle cx="60" cy="60" r="11" fill="#FFFFFF"/>
+            <circle cx="60" cy="60" r="7"  fill="#D6E6E7"/>
+            <circle cx="60" cy="60" r="3.5" fill="#C5CC82"/>
+          </svg>
+        </div>
+        <div class="stem"></div>
+        <div class="card-box">
+          <div class="card-label">Semestre 3</div>
+          <div class="card-sub">En el 4to semestre MAD-SAN realizó un cambio de enfoque a un proyecto más acorde a la automatización.</div>
+          <button class="card-cta" onclick="event.stopPropagation();toggle(2)">Ver resultados →</button>
+        </div>
+      </div>
+
+      <div class="sem-card" style="--ac: var(--color-1)" onclick="toggle(3)">
+        <span class="card-num">04</span>
+        <div class="flower-ring">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="dg1" cx="40%" cy="30%" r="65%">
+                <stop offset="0%" stop-color="#FFFFFF"/><stop offset="55%" stop-color="#F4DFE6"/><stop offset="100%" stop-color="#E0A3BB"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="60" cy="28" rx="8" ry="22" fill="url(#dg1)" transform="rotate(0,60,60)"/>
+            <ellipse cx="60" cy="28" rx="8" ry="22" fill="url(#dg1)" transform="rotate(45,60,60)"/>
+            <ellipse cx="60" cy="28" rx="8" ry="22" fill="url(#dg1)" transform="rotate(90,60,60)"/>
+            <ellipse cx="60" cy="28" rx="8" ry="22" fill="url(#dg1)" transform="rotate(135,60,60)"/>
+            <ellipse cx="60" cy="28" rx="8" ry="22" fill="url(#dg1)" transform="rotate(180,60,60)"/>
+            <ellipse cx="60" cy="28" rx="8" ry="22" fill="url(#dg1)" transform="rotate(225,60,60)"/>
+            <ellipse cx="60" cy="28" rx="8" ry="22" fill="url(#dg1)" transform="rotate(270,60,60)"/>
+            <ellipse cx="60" cy="28" rx="8" ry="22" fill="url(#dg1)" transform="rotate(315,60,60)"/>
+            <circle cx="60" cy="60" r="14" fill="#D6E6E7"/>
+            <circle cx="60" cy="60" r="8" fill="#C5CC82"/>
+            <circle cx="60" cy="60" r="4" fill="#97A13B"/>
+          </svg>
+        </div>
+        <div class="stem"></div>
+        <div class="card-box">
+          <div class="card-label">Semestre 4</div>
+          <div class="card-sub">Nuevo enfoque.</div>
+          <button class="card-cta" onclick="event.stopPropagation();toggle(3)">Ver resultados →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="exp-wrap" id="ep">
+    <div class="exp-inner">
+      <div class="exp-bar" id="ep-bar"></div>
+      <div class="exp-body">
+        <span class="exp-tag" id="ep-tag"></span>
+        <div class="exp-title" id="ep-title"></div>
+        <div class="exp-desc"  id="ep-desc"></div>
+      </div>
+      <a href="#" class="exp-btn" id="ep-btn"></a>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <div class="footer-content">
+    <h2 class="footer-title">MAD-SAN</h2>
+    <p class="footer-text"><strong>Universidad San Buenaventura, Bogotá – 2026</strong><br>Tecnología en Automatización Industrial y Desarrollo de Software</p>
+    <p class="footer-text" style="font-weight:600">Desarrollado por: Andrea Castro y Mariana Navarro</p>
+    <div class="footer-contact">
+      <p>Contáctanos:</p>
+      <a href="mailto:mnavarroo1@academia.usbbog.edu.co">mnavarroo1@academia.usbbog.edu.co</a>
+      <a href="mailto:facastroc@academia.usbbog.edu.co">facastroc@academia.usbbog.edu.co</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Base de datos actualizada con los nuevos colores de la paleta
+const DATA = [
+  { color:'#E0A3BB', tag:'Semestre 01', title:'No disponible',    desc:'En el 4to semestre MAD-SAN realizó un cambio de enfoque a un proyecto más acorde a la automatización.', btn:'Ver resultados →', link:'#' },
+  { color:'#C5CC82', tag:'Semestre 02', title:'No disponible',        desc:'En el 4to semestre MAD-SAN realizó un cambio de enfoque a un proyecto más acorde a la automatización.', btn:'Ver resultados →', link:'#' },
+  { color:'#97A13B', tag:'Semestre 03', title:'No disponible',desc:'En el 4to semestre MAD-SAN realizó un cambio de enfoque a un proyecto más acorde a la automatización.', btn:'Ver resultados →', link:'#' },
+  { color:'#F4DFE6', tag:'Semestre 04', title:'Nuevo enfoque',       desc:'En el semestre 4 iniciamos el desarrollo del robot agrícola autónomo MAD-SAN. Consulta la página de este semestre para conocer el progreso en diseño y desarrollo.', btn:'Ver resultados →', link:'semestre4.html' },
+];
+
+const cards = document.querySelectorAll('.sem-card');
+const ep    = document.getElementById('ep');
+let cur = -1;
+
+function toggle(i) {
+  if (cur === i) { close(); return; }
+  cur = i;
+  const d = DATA[i];
+  
+  cards.forEach((c,j) => c.classList.toggle('active', j===i));
+  document.getElementById('ep-bar').style.background   = d.color;
+  ep.style.setProperty('--ep-color', d.color);
+  
+  document.getElementById('ep-tag').textContent         = d.tag;
+  document.getElementById('ep-title').textContent       = d.title;
+  document.getElementById('ep-desc').textContent        = d.desc;
+  document.getElementById('ep-btn').textContent         = d.btn;
+  document.getElementById('ep-btn').href                = d.link;
+  
+  // Ajuste de color del botón dinámico dependiendo del fondo para contrastar (el rosa más claro necesita texto oscuro, los demás el color propio)
+  if(i === 3) {
+      document.getElementById('ep-btn').style.color = '#97A13B'; 
+  } else {
+      document.getElementById('ep-btn').style.color = d.color;
+  }
+
+  ep.classList.add('open');
+  setTimeout(() => ep.scrollIntoView({ behavior:'smooth', block:'nearest' }), 80);
+}
+
+function close() {
+  cur = -1;
+  cards.forEach(c => c.classList.remove('active'));
+  ep.classList.remove('open');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#semestres-hub')) close();
+});
+
+// Control de video
+const videoHero = document.getElementById('hero-video');
+if (videoHero) {
+  videoHero.addEventListener('timeupdate', () => {
+    if (videoHero.duration && videoHero.currentTime >= (videoHero.duration / 2)) {
+      videoHero.pause();
+    }
+  });
+}
+</script>
+</body>
+</html>

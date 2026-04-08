@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MAD-SAN | Sembrando el Futuro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --white: #ffffff;
+      --black: #0a0a0a;
+      --glass-bg: rgba(255,255,255,0.12);
+      --glass-border: rgba(255,255,255,0.35);
+      --glass-shadow: rgba(0,0,0,0.18);
+      --glass-highlight: rgba(255,255,255,0.55);
+      --accent: #2c7a7b; /* Verde tech/agro */
+      --ps-bg: #D6E6E7;
+      --apple-bg: #F5F5F7; /* Gris claro elegante Apple */
+      --footer-bg: #F4DFE6; /* Color pastel solicitado */
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: auto;
+    }
+
+    .nav-island {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        0 8px 32px var(--glass-shadow),
+        0 1.5px 0 var(--glass-highlight) inset,
+        0 -1px 0 rgba(0,0,0,0.12) inset;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-island::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(255,255,255,0.22) 50%,
+        transparent 70%
+      );
+      transform: translateX(-150%);
+      animation: liquid-shimmer 3.5s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes liquid-shimmer {
+      0%   { transform: translateX(-150%); opacity: 0; }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translateX(250%); opacity: 0; }
+    }
+
+    .nav-island::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 50%;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.28) 0%,
+        transparent 100%
+      );
+      border-radius: 999px 999px 0 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .nav-link {
+      position: relative;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.88);
+      text-decoration: none;
+      padding: 5px 14px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+      transition: color 0.25s, background 0.25s;
+      white-space: nowrap;
+      z-index: 2;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--white);
+      background: rgba(255,255,255,0.2); 
+    }
+
+    .nav-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(0,0,0,0.18) 0%,
+        rgba(0,0,0,0.05) 40%,
+        rgba(0,0,0,0.55) 100%
+      );
+      pointer-events: none;
+    }
+
+    .hero-title {
+      position: absolute;
+      bottom: 52px;
+      left: 52px;
+      z-index: 10;
+      line-height: 0.9;
+      user-select: none;
+    }
+
+    .hero-title .label {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+
+    .hero-title .name {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 9vw, 130px);
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      text-shadow:
+        0 2px 40px rgba(0,0,0,0.5),
+        0 0 80px rgba(0,0,0,0.3);
+      -webkit-text-stroke: 0.5px rgba(255,255,255,0.15);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 52px;
+      right: 52px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.45;
+    }
+
+    .scroll-hint span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      color: var(--white);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--white), transparent);
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scroll-pulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.15); }
+    }
+
+    /* ── QUÉ ES MAD-SAN ── */
+    #que-es-madsan {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .madsan-bg-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .madsan-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 40%, transparent 100%);
+    }
+
+    .madsan-content {
+      position: relative;
+      z-index: 2;
+      width: 50%; 
+      padding-left: 5vw;
+      padding-right: 2vw; 
+      opacity: 0; 
+      transform: translateX(-50px); 
+    }
+
+    .madsan-content.animate-text {
+      animation: fadeSlideIn 1.5s ease-out forwards 2s;
+    }
+
+    .madsan-tag {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(44, 122, 123, 0.2);
+      color: #a8f0d3;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      border: 1px solid rgba(44, 122, 123, 0.4);
+    }
+
+    /* Cambiado Syne por Montserrat */
+    .madsan-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 25px;
+      text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .madsan-desc {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: #e0e0e0;
+      font-weight: 300;
+    }
+
+    @keyframes fadeSlideIn {
+      0% { opacity: 0; transform: translateX(-50px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── PROBLEMA Y SOLUCIÓN ── */
+    #problema-solucion {
+      position: relative;
+      min-height: 100vh;
+      background-color: var(--ps-bg);
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 20px;
+      overflow: hidden;
+    }
+
+    /* Cambiado Syne por Montserrat */
+    .ps-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #1a3c3d;
+      margin-bottom: 60px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    /* Trigos Bailando */
+    .trigo-bg {
+      position: absolute;
+      width: 80px;
+      height: auto;
+      opacity: 0.8;
+      z-index: 1;
+      transform-origin: bottom center;
+      animation: dancing-wheat ease-in-out infinite alternate;
+    }
+
+    .trigo-l1 { left: 2%; bottom: 10%; animation-duration: 3.5s; animation-delay: 0s; }
+    .trigo-l2 { left: -1%; bottom: 45%; animation-duration: 4.2s; animation-delay: 0.5s; width: 60px; }
+    .trigo-l3 { left: 3%; bottom: 80%; animation-duration: 3.8s; animation-delay: 1.2s; width: 100px; }
+    
+    .trigo-r1 { right: 2%; bottom: 15%; animation-duration: 4s; animation-delay: 0.3s; }
+    .trigo-r2 { right: -1%; bottom: 50%; animation-duration: 3.6s; animation-delay: 0.8s; width: 70px; }
+    .trigo-r3 { right: 3%; bottom: 85%; animation-duration: 4.5s; animation-delay: 0.1s; width: 90px; }
+
+    @keyframes dancing-wheat {
+      0% { transform: rotate(-12deg); }
+      100% { transform: rotate(15deg); }
+    }
+
+    /* Contenedor de Cacaos */
+    .cacao-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 60px;
+      z-index: 2;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .cacao-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 320px;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    .cacao-image-container {
+      width: 220px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .cacao-image-container img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15));
+      transition: all 0.4s ease;
+    }
+
+    .cacao-card:hover .cacao-image-container { transform: translateY(-15px) scale(1.05); }
+    .cacao-card.active .cacao-image-container img {
+      transform: scale(0.85);
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+    }
+
+    /* Cambiado Syne por Montserrat */
+    .cacao-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-top: 20px;
+      color: #1a3c3d;
+      transition: color 0.3s ease;
+    }
+
+    .cacao-card.active .cacao-label { color: #2c7a7b; }
+
+    .cacao-info {
+      background: var(--white);
+      color: #333;
+      padding: 0;
+      border-radius: 16px;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      margin-top: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .cacao-card.active .cacao-info {
+      padding: 25px 20px;
+      max-height: 400px;
+      opacity: 1;
+    }
+
+    /* ── DETALLES TÉCNICOS (BENTO STYLE APPLE) ── */
+    #detalles-tecnicos {
+      position: relative;
+      min-height: 100vh;
+      background-color: var(--apple-bg);
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5vh 2vw;
+      overflow: hidden;
+    }
+
+    .apple-bento-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(5, minmax(140px, auto));
+      gap: 1.5vw;
+      width: 100%;
+      max-width: 1600px;
+      aspect-ratio: 16 / 9;
+      z-index: 2;
+    }
+
+    .bento-card {
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+      padding: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      color: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+    }
+
+    /* Cambiado Syne por Montserrat */
+    .bento-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .bento-card p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #333;
+      font-weight: 400;
+    }
+
+    .bento-card ul {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .bento-card ul li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    .bento-card ul li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .bento-title {
+      grid-column: 3 / span 2;
+      grid-row: 1 / span 3;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+    }
+
+    /* Cambiado Syne por Montserrat */
+    .bento-title h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #1a3c3d;
+      line-height: 1.1;
+    }
+
+    .bento-title p {
+      margin-top: 10px;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .bento-arch-main {
+      grid-column: 1 / span 2;
+      grid-row: 1 / span 2;
+    }
+
+    .bento-arch-sub {
+      grid-column: 1;
+      grid-row: 3;
+      padding: 1.5rem;
+    }
+
+    .bento-spec-main {
+      grid-column: 5 / span 2;
+      grid-row: 1 / span 2;
+    }
+
+    .bento-spec-sub {
+      grid-column: 6;
+      grid-row: 3;
+      padding: 1.5rem;
+    }
+
+    .bento-img-slot {
+      padding: 0;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bento-img-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.3s ease; 
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .slot-1 { grid-column: 1; grid-row: 3; }
+    .slot-2 { grid-column: 2; grid-row: 3; }
+    .slot-3 { grid-column: 2; grid-row: 4; }
+    .slot-4 { grid-column: 3 / span 2; grid-row: 4; }
+    .slot-5 { grid-column: 5; grid-row: 3; }
+    .slot-6 { grid-column: 6; grid-row: 3; }
+    .slot-7 { grid-column: 1 / span 3; grid-row: 5; }
+    .slot-8 { grid-column: 4 / span 3; grid-row: 5; }
+
+    /* ── FOOTER (NUEVO DISEÑO) ── */
+    footer {
+      background-color: var(--footer-bg);
+      color: #1a3c3d;
+      padding: 80px 5vw;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-content {
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .footer-title {
+      font-family: 'Bebas Neue', sans-serif; /* Mantenemos Bebas Neue para la marca */
+      font-size: 3.5rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      margin-bottom: 5px;
+      color: #1a3c3d;
+    }
+
+    .footer-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .footer-contact {
+      margin-top: 25px;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .footer-contact a {
+      color: #2c7a7b;
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.3s;
+      display: inline-block;
+      margin: 5px 0;
+    }
+
+    .footer-contact a:hover {
+      color: #1a3c3d;
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav aria-label="Navegación principal">
+    <div class="nav-island">
+      <a href="#home" class="nav-link active">Home</a>
+      <div class="nav-dot"></div>
+      <a href="semestres.html" class="nav-link">Semestres</a>
+      <div class="nav-dot"></div>
+      <a href="nosotros.html" class="nav-link">Nosotros</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="home">
+    <div class="hero-fallback"></div>
+    <video class="hero-video" src="img/robberherovideo.mp4" autoplay muted loop playsinline preload="auto"></video>
+    <div class="hero-overlay"></div>
+    <div class="hero-title">
+      <span class="label">Proyecto</span>
+      <span class="name">MAD-SAN</span>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section id="que-es-madsan">
+    <video class="madsan-bg-video" src="img/robbersembrando.mp4" autoplay muted loop playsinline preload="auto"></video>
+    <div class="madsan-overlay"></div>
+    
+    <div class="madsan-content">
+      <span class="madsan-tag">Innovación Agrícola</span>
+      <h2 class="madsan-title">¿Qué es MAD-SAN?</h2>
+      <p class="madsan-desc">
+        MAD-SAN es un proyecto que plantea el diseño y desarrollo de un robot agrícola móvil. Su objetivo es desplazarse por diferentes tipos de terreno y realizar la siembra automática de semillas mediante un sistema mecánico y un sistema de control programable, facilitando el trabajo de campo y optimizando los procesos productivos.
+      </p>
+    </div>
+  </section>
+
+  <section id="problema-solucion">
+    <img src="img/trigo.png" alt="" class="trigo-bg trigo-l1">
+    <img src="img/trigo.png" alt="" class="trigo-bg trigo-l2">
+    <img src="img/trigo.png" alt="" class="trigo-bg trigo-l3">
+    <img src="img/trigo.png" alt="" class="trigo-bg trigo-r1">
+    <img src="img/trigo.png" alt="" class="trigo-bg trigo-r2">
+    <img src="img/trigo.png" alt="" class="trigo-bg trigo-r3">
+
+    <h2 class="ps-title">El Desafío y La Solución</h2>
+
+    <div class="cacao-wrapper">
+      <div class="cacao-card" onclick="toggleCacao(this)">
+        <div class="cacao-image-container">
+          <img src="img/cacao1.png" alt="Cacao Problema">
+        </div>
+        <div class="cacao-label">El Problema</div>
+        <div class="cacao-info">
+          <p>En la agricultura, el proceso de siembra suele realizarse de manera manual, lo que genera mayor esfuerzo físico, pérdida de tiempo y poca precisión en la distribución de semillas. Además, las condiciones variables del terreno dificultan el trabajo y reducen la eficiencia.</p>
+        </div>
+      </div>
+
+      <div class="cacao-card" onclick="toggleCacao(this)">
+        <div class="cacao-image-container">
+          <img src="img/cacao2.png" alt="Cacao Solución">
+        </div>
+        <div class="cacao-label">La Solución</div>
+        <div class="cacao-info">
+          <p>Implementación de un robot agrícola capaz de desplazarse por diferentes tipos de terreno y realizar la siembra automática de semillas siguiendo coordenadas y distancias programadas, optimizando las labores agrícolas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="detalles-tecnicos">
+    <div class="apple-bento-grid">
+      
+      <div class="bento-card bento-title">
+        <h2>Detalles Técnicos</h2>
+        <p>Módulos de Ingeniería</p>
+      </div>
+
+      <div class="bento-card bento-arch-main">
+        <h3>Arquitectura del Sistema</h3>
+        <p>El sistema está compuesto por tres módulos principales: el sistema de movilidad, el sistema de almacenamiento y dispensación de semillas, y el sistema de control.</p>
+      </div>
+
+      <div class="bento-card bento-arch-sub">
+        <p>Permite el desplazamiento en terrenos variados, la dispensación mediante un mecanismo tipo garra y la navegación por coordenadas exactas.</p>
+      </div>
+
+      <div class="bento-card bento-spec-main">
+        <h3>Especificaciones Técnicas</h3>
+        <p>Componentes principales integrados para el funcionamiento automatizado del prototipo agrícola de precisión.</p>
+      </div>
+
+      <div class="bento-card bento-spec-sub">
+        <ul>
+          <li>Microcontrolador Arduino</li>
+          <li>Motores DC y controlador</li>
+          <li>Sensores de navegación y GPS</li>
+          <li>Sistema mecánico tipo garra</li>
+        </ul>
+      </div>
+
+      <div class="bento-card bento-img-slot slot-1"><img src="img/bento1.png" alt=""></div>
+      <div class="bento-card bento-img-slot slot-2"><img src="img/bento2.png" alt=""></div>
+      <div class="bento-card bento-img-slot slot-3"><img src="img/bento3.png" alt=""></div>
+      <div class="bento-card bento-img-slot slot-4"><img src="img/bento4.png" alt=""></div>
+      <div class="bento-card bento-img-slot slot-5"><img src="img/bento5.png" alt=""></div>
+      <div class="bento-card bento-img-slot slot-6"><img src="img/bento6.png" alt=""></div>
+      <div class="bento-card bento-img-slot slot-7"><img src="img/bento7.png" alt=""></div>
+      <div class="bento-card bento-img-slot slot-8"><img src="img/bento8.png" alt=""></div>
+
+    </div>
+  </section>
+
+  <footer id="contacto">
+    <div class="footer-content">
+      <h2 class="footer-title">MAD-SAN</h2>
+      <p class="footer-text">
+        <strong>Universidad San Buenaventura, Bogotá - 2026</strong><br>
+        Tecnología en Automatización Industrial
+      </p>
+      <p class="footer-text" style="font-weight: 700;">
+        Desarrollado por: Andrea Castro y Mariana Navarro
+      </p>
+      <div class="footer-contact">
+        <p>Contáctanos:</p>
+        <a href="mailto:mnavarroo1@academia.usbbog.edu.co">mnavarroo1@academia.usbbog.edu.co</a><br>
+        <a href="mailto:facastroc@academia.usbbog.edu.co">facastroc@academia.usbbog.edu.co</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll('section[id], footer[id]');
+    const links    = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          // Intenta encontrar el link por ID
+          const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.5 });
+
+    sections.forEach(s => observer.observe(s));
+
+    // Smooth scroll REVISADO PARA PERMITIR ENLACES EXTERNOS
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        const href = link.getAttribute('href');
+        
+        // SOLO aplica el deslizamiento si el enlace empieza con "#" (ej: #home)
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        }
+        // Si el enlace no empieza por # (ej: semestres.html), dejará que el navegador abra la otra página normalmente.
+      });
+    });
+
+    const madsanContent = document.querySelector('.madsan-content');
+    if (madsanContent) {
+      const madsanObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-text');
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      madsanObserver.observe(madsanContent);
+    }
+
+    function toggleCacao(clickedElement) {
+      document.querySelectorAll('.cacao-card').forEach(card => {
+        if (card !== clickedElement) card.classList.remove('active');
+      });
+      clickedElement.classList.toggle('active');
+    }
+
+    function initDynamicBento() {
+      const slots = document.querySelectorAll('.bento-img-slot');
+      if (slots.length !== 8) return; 
+
+      setInterval(() => {
+        let idx1 = Math.floor(Math.random() * 8);
+        let idx2 = Math.floor(Math.random() * 8);
+        while (idx1 === idx2) {
+          idx2 = Math.floor(Math.random() * 8);
+        }
+
+        const img1 = slots[idx1].querySelector('img');
+        const img2 = slots[idx2].querySelector('img');
+
+        img1.style.opacity = '0';
+        img2.style.opacity = '0';
+
+        setTimeout(() => {
+          const src1 = img1.src;
+          const src2 = img2.src;
+
+          img1.src = src2;
+          img2.src = src1;
+
+          img1.style.opacity = '1';
+          img2.style.opacity = '1';
+        }, 300); 
+
+      }, 2000); 
+    }
+
+    window.addEventListener('load', initDynamicBento);
+  </script>
+</body>
+</html>
